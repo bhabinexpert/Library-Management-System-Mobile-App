@@ -3,7 +3,7 @@ import { View, Text } from "react-native";
 
 export default function AboutUs() {
   return (
-    <View className=" flex flex-1 p-4 w-full bg-light-200">
+    <View className="p-4 w-full">
 
       {/* About Section */}
       <View className="items-center mb-2">
@@ -15,8 +15,8 @@ export default function AboutUs() {
       </View>
 
       {/* Mission Section */}
-      <View className=" p-4 rounded-lg ">
-        <Text className="text-2xl font-semibold mb-2 text-center">Our Mission</Text>
+      <View className=" p-4 rounded-3xl bg-slate-600">
+        <Text className="text-4xl font-bold mb-2 text-center">Our Mission</Text>
         <Text className="text-base text-primary font-medium leading-relaxed text-center">
           At Gyan Kosh, we believe knowledge should be accessible to everyone. Our mission is to break down barriers to learning by providing instant access to a vast collection of books and creating a global community of passionate readers.
         </Text>
@@ -24,7 +24,7 @@ export default function AboutUs() {
 
        <View className="flex flex-col justify-center gap-4 ">
         {/* Card 1 */}
-        <View className="w-40 h-44 bg-accent rounded-2xl shadow-md p-4 items-center justify-center">
+        <View className="w-40 h-44 bg-light-100 rounded-2xl shadow-md p-4 items-center justify-center">
           <Text className="text-3xl mb-2">📚</Text>
           <Text className="font-bold text-center mb-1">Vast Book Collection</Text>
           <Text className="text-gray-600 text-xs text-center">
@@ -33,7 +33,7 @@ export default function AboutUs() {
         </View>
 
         
-        <View className="w-40 h-44 bg-accent rounded-2xl shadow-md p-4 items-center justify-center">
+        <View className="w-40 h-44 bg-light-100 rounded-2xl shadow-md p-4 items-center justify-center">
           <Text className="text-3xl mb-2">🎓</Text>
           <Text className="font-bold text-center mb-1">Educational Excellence</Text>
           <Text className="text-gray-600 text-xs text-center">
@@ -42,7 +42,7 @@ export default function AboutUs() {
         </View>
 
         {/* Card 3 */}
-        <View className="w-40 h-44 bg-accent rounded-2xl shadow-md p-4 items-center justify-center">
+        <View className="w-40 h-44 bg-light-100 rounded-2xl shadow-md p-4 items-center justify-center">
           <Text className="text-3xl mb-2">💡</Text>
           <Text className="font-bold text-center mb-1">Innovation in Reading</Text>
           <Text className="text-gray-600 text-xs text-center">
@@ -51,7 +51,7 @@ export default function AboutUs() {
         </View>
 
        
-        <View className="w-40 h-44 bg-accent rounded-2xl shadow-md p-4 items-center justify-center">
+        <View className="w-40 h-44 bg-light-100 rounded-2xl shadow-md p-4 items-center justify-center">
           <Text className="text-3xl mb-2">⚡</Text>
           <Text className="font-bold text-center mb-1">Instant Borrowing</Text>
           <Text className="text-gray-600 text-xs text-center">
@@ -61,34 +61,35 @@ export default function AboutUs() {
       </View>
 
       
-      <View className="flex flex-wrap flex-row justify-center gap-4 mt-6">
-        {/* Stat 1 */}
-        <View className="w-40 h-28 bg-primary rounded-2xl shadow-md p-4 items-center justify-center">
+      <View className="justify-center gap-4 mt-6">
+        
+        <View className=" w-40 h-28 bg-primary rounded-2xl shadow-md p-4 items-center justify-center">
           <Text className="text-xl font-bold text-white">1000+</Text>
           <Text className="font-semibold text-white">Books Available</Text>
           <Text className="text-white text-xs">Growing collection</Text>
         </View>
 
-        {/* Stat 2 */}
-        <View className="w-40 h-28 bg-primary rounded-2xl shadow-md p-4 items-center justify-center">
+        
+         <View className="w-40 h-28 bg-primary rounded-2xl shadow-md p-4 items-center justify-center">
           <Text className="text-xl font-bold text-white">5,000+</Text>
           <Text className="font-semibold text-white">Active Readers</Text>
           <Text className="text-white text-xs">Growing daily</Text>
-        </View>
+        </View> 
 
-        {/* Stat 3 */}
+        
         <View className="w-40 h-28 bg-primary rounded-2xl shadow-md p-4 items-center justify-center">
           <Text className="text-xl font-bold text-white">10+</Text>
           <Text className="font-semibold text-white">Book Categories</Text>
           <Text className="text-white text-xs">Fiction to academic</Text>
-        </View>
+        </View> 
 
-        {/* Stat 4 */}
+        
         <View className="w-40 h-28 bg-primary rounded-2xl shadow-md p-4 items-center justify-center">
           <Text className="text-xl font-bold text-white">24/7</Text>
           <Text className="font-semibold text-white">Access</Text>
           <Text className="text-white text-xs">Always available</Text>
-        </View>
+        </View> 
+
       </View>
 
     </View>

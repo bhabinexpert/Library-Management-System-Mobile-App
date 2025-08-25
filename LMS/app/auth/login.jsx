@@ -93,10 +93,11 @@ const login = () => {
       <View>
         <Text>Don't have an account?</Text>
         
-        <Link to="./auth/signup">
+        {/* <Link to="./auth/signup"> */}
         
         <Text>Sign up</Text>
-        </Link>
+        
+        {/* </Link> */}
         
       </View>
     </View>
