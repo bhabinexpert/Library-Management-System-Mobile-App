@@ -41,7 +41,7 @@ const Login = () => {
         // Short delay to show success message
         setTimeout(() => {
           if (user.role === "admin") {
-            router.replace("/panels/admin");
+            router.replace("/admin");
           } else {
             router.replace("/user");
           }
