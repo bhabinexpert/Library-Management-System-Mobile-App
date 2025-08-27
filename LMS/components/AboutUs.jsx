@@ -3,7 +3,7 @@ import { View, Text } from "react-native";
 
 export default function AboutUs() {
   return (
-    <View className="p-4 w-full">
+    <View className="p-4 w-full bg-light-300">
 
       {/* About Section */}
       <View className="items-center mb-2">
@@ -15,15 +15,15 @@ export default function AboutUs() {
       </View>
 
       {/* Mission Section */}
-      <View className=" p-4 rounded-3xl bg-slate-600">
-        <Text className="text-4xl font-bold mb-2 text-center">Our Mission</Text>
+      <View className=" p-4">
+        <Text className="text-3xl font-bold mb-2 text-center">Our Mission</Text>
         <Text className="text-base text-primary font-medium leading-relaxed text-center">
           At Gyan Kosh, we believe knowledge should be accessible to everyone. Our mission is to break down barriers to learning by providing instant access to a vast collection of books and creating a global community of passionate readers.
         </Text>
       </View>
 
-       <View className="flex flex-col justify-center gap-4 ">
-        {/* Card 1 */}
+       <View className="flex flex-col justify-center gap-4 p-4">
+       
         <View className="w-40 h-44 bg-light-100 rounded-2xl shadow-md p-4 items-center justify-center">
           <Text className="text-3xl mb-2">📚</Text>
           <Text className="font-bold text-center mb-1">Vast Book Collection</Text>
@@ -61,7 +61,7 @@ export default function AboutUs() {
       </View>
 
       
-      <View className="justify-center gap-4 mt-6">
+      <View className="justify-center gap-4 p-6 mt-6">
         
         <View className=" w-40 h-28 bg-primary rounded-2xl shadow-md p-4 items-center justify-center">
           <Text className="text-xl font-bold text-white">1000+</Text>
