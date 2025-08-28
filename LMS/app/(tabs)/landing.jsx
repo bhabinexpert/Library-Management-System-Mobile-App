@@ -75,8 +75,7 @@ const Landing = () => {
             </View>
           </View>
         </View>
-
-        <View className= 'bg-light-200'><AboutUs /></View>
+      <View className= 'bg-light-200'><AboutUs /></View>
       </ScrollView>
     </View>
   );
