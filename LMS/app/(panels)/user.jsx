@@ -194,7 +194,7 @@ export default function user() {
       </View>
     );
 
-  const categories = ["all", ...new Set(books.map((b) => b.category))];
+  const categories = ["All", ...new Set(books.map((b) => b.category))];
 
   // Filter borrowed books
   const myBooks = burrowedBooks.filter((b) => b.status === "burrowed");

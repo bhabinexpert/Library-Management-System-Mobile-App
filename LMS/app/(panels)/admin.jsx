@@ -117,7 +117,7 @@ export default function AdminDashboard() {
       { text: "Cancel" },
       { text: "Delete", onPress: async () => {
         try {
-          await axios.delete(`http://localhost:9000/api/users/${id}`);
+          await axios.delete(`http://localhost:9000/api/deleteusers/${id}`);
           setUsers(prev => prev.filter(u => u._id !== id));
         } catch (err) { alert("Error deleting user"); }
       }, style: "destructive" }
