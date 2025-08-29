@@ -61,7 +61,7 @@ export default function user() {
         userIdRef.current = user._id;
 
         const userResponse = await axios.get(
-          "http://localhost:9000/api/users/me",
+          "https://library-management-system-gzjz.onrender.com/api/users/me",
           { headers: { Authorization: `Bearer ${token}` } }
         );
         const updatedUser = userResponse.data;
@@ -98,7 +98,7 @@ export default function user() {
       if (!targetUserId) return;
 
       // Fetch all books
-      const booksResponse = await axios.get("http://localhost:9000/api/books", {
+      const booksResponse = await axios.get("https://library-management-system-gzjz.onrender.com/api/books", {
         headers: { Authorization: `Bearer ${token}` },
       });
       const booksData = booksResponse.data;
@@ -114,7 +114,7 @@ export default function user() {
 
       // Fetch borrowed status
       const burrowedResponse = await axios.get(
-        `http://localhost:9000/api/books/burrowstatus/${targetUserId}`,
+        `https://library-management-system-gzjz.onrender.com/api/books/burrowstatus/${targetUserId}`,
         { headers: { Authorization: `Bearer ${token}` } }
       );
       const records = Array.isArray(burrowedResponse.data)
@@ -168,7 +168,7 @@ export default function user() {
     try {
       const token = await AsyncStorage.getItem("token");
       await axios.put(
-        `http://localhost:9000/api/books/burrow/${burrowingBook._id}`,
+        `https://library-management-system-gzjz.onrender.com/api/books/burrow/${burrowingBook._id}`,
         { user: currentUser._id, book: burrowingBook._id },
         { headers: { Authorization: `Bearer ${token}` } }
       );
@@ -439,7 +439,7 @@ export default function user() {
                       setIsUpdatingProfile(true);
                       const token = await AsyncStorage.getItem("token");
                       const response = await axios.put(
-                        `http://localhost:9000/api/users/update/${currentUser._id}`,
+                        `https://library-management-system-gzjz.onrender.com/api/users/update/${currentUser._id}`,
                         {
                           fullName: profileForm.fullName,
                           email: profileForm.email,

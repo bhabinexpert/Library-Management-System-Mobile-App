@@ -3,12 +3,15 @@ import { View, Text, TextInput, TouchableOpacity, Alert, ScrollView } from "reac
 import axios from "axios";
 import { Link } from "expo-router"; 
 import AsyncStorage from "@react-native-async-storage/async-storage";
+import { useRouter } from "expo-router";
 
 export default function Signup() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [fullName, setFullName] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
+  const router = useRouter();
+
 
   const handleSubmit = async () => {
     if (!email || !password || !confirmPassword || !fullName) {
@@ -28,7 +31,7 @@ export default function Signup() {
     }
 
     try {
-      const response = await axios.post("http://localhost:9000/signup", {
+      const response = await axios.post("https://library-management-system-gzjz.onrender.com/signup", {
         fullName,
         email,
         password,
@@ -39,11 +42,10 @@ export default function Signup() {
 
       Alert.alert("Success", "Signup Successfully!");
 
-      // Navigate to home after signup
-      // With expo-router, replace with the correct route
-      // Example: /user/home
-      window.location.href = "/user/home"; // only works in web
-      // For mobile with expo-router, use <Redirect /> or <Link />
+      
+      window.location.href = "/user/home";
+      router.push("/user/home");
+
     } catch (error) {
       Alert.alert("Error", error.response?.data?.message || "Signup failed");
       console.log(error);

@@ -20,7 +20,7 @@ const Login = () => {
       setLoading(true);
 
       const response = await axios.get(
-        "http://localhost:9000/", 
+        "https://library-management-system-gzjz.onrender.com/", 
         {
           headers: {
             Authorization: `Bearer ${token}`,
@@ -69,7 +69,7 @@ const Login = () => {
 
     try {
       setLoading(true);
-      const response = await axios.post("http://localhost:9000/login", formData);
+      const response = await axios.post("https://library-management-system-gzjz.onrender.com/login", formData);
 
       if (response.status === 200) {
         const { token, user } = response.data;

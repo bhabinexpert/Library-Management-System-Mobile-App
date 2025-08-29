@@ -46,11 +46,11 @@ export default function AdminDashboard() {
   useEffect(() => {
     const fetchCounts = async () => {
       try {
-        const booksRes = await axios.get("http://localhost:9000/api/books/count");
-        const usersRes = await axios.get("http://localhost:9000/totalusers");
-        const burrowedRes = await axios.get("http://localhost:9000/api/stats/burrowed/count");
-        const overdueRes = await axios.get("http://localhost:9000/api/burrowings/overdue");
-        const catRes = await axios.get("http://localhost:9000/api/category-counts");
+        const booksRes = await axios.get("https://library-management-system-gzjz.onrender.com/api/books/count");
+        const usersRes = await axios.get("https://library-management-system-gzjz.onrender.com/totalusers");
+        const burrowedRes = await axios.get("https://library-management-system-gzjz.onrender.com/api/stats/burrowed/count");
+        const overdueRes = await axios.get("https://library-management-system-gzjz.onrender.com/api/burrowings/overdue");
+        const catRes = await axios.get("https://library-management-system-gzjz.onrender.com/api/category-counts");
 
         setTotalBooks(booksRes.data.totalBooks);
         setTotalUsers(usersRes.data.totalUsers);
@@ -67,18 +67,18 @@ export default function AdminDashboard() {
     const fetchData = async () => {
       try {
         if (activeTab === "users") {
-          const res = await axios.get("http://localhost:9000/api/userdata");
+          const res = await axios.get("https://library-management-system-gzjz.onrender.com/api/userdata");
           const usersWithBurrow = await Promise.all(res.data.map(async user => {
-            const burrowRes = await axios.get(`http://localhost:9000/api/books/burrowstatus/${user._id}`);
+            const burrowRes = await axios.get(`https://library-management-system-gzjz.onrender.com/api/books/burrowstatus/${user._id}`);
             const currentBurrows = Array.isArray(burrowRes.data) ? burrowRes.data.filter(r => r.status === "burrowed" || r.status === "borrowed").length : 0;
             return { ...user, currentBurrows };
           }));
           setUsers(usersWithBurrow);
         } else if (activeTab === "books") {
-          const res = await axios.get("http://localhost:9000/api/books");
+          const res = await axios.get("https://library-management-system-gzjz.onrender.com/api/books");
           setBooks(res.data);
         } else if (activeTab === "burrowing") {
-          const res = await axios.get("http://localhost:9000/api/burrowings");
+          const res = await axios.get("https://library-management-system-gzjz.onrender.com/api/burrowings");
           setBurrowRecords(res.data);
         }
       } catch (err) { console.log(err); }
@@ -97,7 +97,7 @@ export default function AdminDashboard() {
   // Users CRUD
   const handleAddUser = async () => {
     try {
-      const res = await axios.post("http://localhost:9000/signup", userForm);
+      const res = await axios.post("https://library-management-system-gzjz.onrender.com/signup", userForm);
       setUsers(prev => [...prev, { ...res.data, currentBurrows: 0 }]); 
 
       setShowAddUserModal(false);
@@ -107,7 +107,7 @@ export default function AdminDashboard() {
 
   const handleEditUser = async () => {
     try {
-      const res = await axios.put(`http://localhost:9000/api/users/${userForm._id}`, userForm);
+      const res = await axios.put(`https://library-management-system-gzjz.onrender.com/api/users/${userForm._id}`, userForm);
       setUsers(prev =>
   prev.map(u => u._id === userForm._id ? { ...res.data, currentBurrows: u.currentBurrows } : u)
 );
@@ -126,7 +126,7 @@ const confirmDeleteUser = (id) => {
 
 const handleDeleteUser = async (id) => {
   try {
-    await axios.delete(`http://localhost:9000/api/deleteusers/${id}`);
+    await axios.delete(`https://library-management-system-gzjz.onrender.com/api/deleteusers/${id}`);
     setUsers(prev => prev.filter(u => u._id !== id)); // updates UI immediately
   } catch (err) {
     alert("Error deleting user");
@@ -138,7 +138,7 @@ const handleDeleteUser = async (id) => {
   const handleAddBook = async () => {
     try {
       const newBook = { ...bookForm, availableCopies: bookForm.totalCopies };
-      const res = await axios.post("http://localhost:9000/api/books", newBook);
+      const res = await axios.post("https://library-management-system-gzjz.onrender.com/api/books", newBook);
      setBooks(prev => [...prev, { ...res.data }]);
 
       setShowAddBookModal(false);
@@ -152,7 +152,7 @@ const handleDeleteUser = async (id) => {
 
   const handleEditBook = async () => {
     try {
-      const res = await axios.put(`http://localhost:9000/api/books/${bookForm._id}`, bookForm);
+      const res = await axios.put(`https://library-management-system-gzjz.onrender.com/api/books/${bookForm._id}`, bookForm);
       setBooks(prev =>
   prev.map(b => b._id === bookForm._id ? { ...res.data } : b)
 );
@@ -175,7 +175,7 @@ const handleDeleteUser = async (id) => {
 
 const handleDeleteBook = async (id) => {
   try {
-    await axios.delete(`http://localhost:9000/api/books/${id}`);
+    await axios.delete(`https://library-management-system-gzjz.onrender.com/api/books/${id}`);
     setBooks(prev => prev.filter(b => b._id !== id));
   } catch (err) {
     alert("Error deleting book");
