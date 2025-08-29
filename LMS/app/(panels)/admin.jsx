@@ -97,8 +97,9 @@ export default function AdminDashboard() {
   // Users CRUD
   const handleAddUser = async () => {
     try {
-      const res = await axios.post("http://localhost:9000/api/users", userForm);
-      setUsers(prev => [...prev, res.data]);
+      const res = await axios.post("http://localhost:9000/signup", userForm);
+      setUsers(prev => [...prev, { ...res.data, currentBurrows: 0 }]); 
+
       setShowAddUserModal(false);
       setUserForm({ fullName: "", email: "", password: "", role: "user", _id: null });
     } catch (err) { alert("Error adding user"); }
@@ -107,30 +108,39 @@ export default function AdminDashboard() {
   const handleEditUser = async () => {
     try {
       const res = await axios.put(`http://localhost:9000/api/users/${userForm._id}`, userForm);
-      setUsers(prev => prev.map(u => u._id === userForm._id ? res.data : u));
+      setUsers(prev =>
+  prev.map(u => u._id === userForm._id ? { ...res.data, currentBurrows: u.currentBurrows } : u)
+);
+
       setShowEditUserModal(false);
       setUserForm({ fullName: "", email: "", password: "", role: "user", _id: null });
     } catch (err) { alert("Error editing user"); }
   };
 
-  const handleDeleteUser = async (id) => {
-    Alert.alert("Confirm Delete", "Are you sure you want to delete this user?", [
-      { text: "Cancel" },
-      { text: "Delete", onPress: async () => {
-        try {
-          await axios.delete(`http://localhost:9000/api/deleteusers/${id}`);
-          setUsers(prev => prev.filter(u => u._id !== id));
-        } catch (err) { alert("Error deleting user"); }
-      }, style: "destructive" }
-    ]);
-  };
+const confirmDeleteUser = (id) => {
+  Alert.alert("Confirm Delete", "Are you sure you want to delete this user?", [
+    { text: "Cancel" },
+    { text: "Delete", onPress: () => handleDeleteUser(id), style: "destructive" }
+  ]);
+};
+
+const handleDeleteUser = async (id) => {
+  try {
+    await axios.delete(`http://localhost:9000/api/deleteusers/${id}`);
+    setUsers(prev => prev.filter(u => u._id !== id)); // updates UI immediately
+  } catch (err) {
+    alert("Error deleting user");
+  }
+};
+
 
   // Books CRUD
   const handleAddBook = async () => {
     try {
       const newBook = { ...bookForm, availableCopies: bookForm.totalCopies };
       const res = await axios.post("http://localhost:9000/api/books", newBook);
-      setBooks(prev => [...prev, res.data]);
+     setBooks(prev => [...prev, { ...res.data }]);
+
       setShowAddBookModal(false);
       setBookForm({
         title: "", author: "", category: "", isbn: "", description: "",
@@ -143,7 +153,10 @@ export default function AdminDashboard() {
   const handleEditBook = async () => {
     try {
       const res = await axios.put(`http://localhost:9000/api/books/${bookForm._id}`, bookForm);
-      setBooks(prev => prev.map(b => b._id === bookForm._id ? res.data : b));
+      setBooks(prev =>
+  prev.map(b => b._id === bookForm._id ? { ...res.data } : b)
+);
+
       setShowEditBookModal(false);
       setBookForm({
         title: "", author: "", category: "", isbn: "", description: "",
@@ -153,17 +166,22 @@ export default function AdminDashboard() {
     } catch (err) { alert("Error editing book"); }
   };
 
-  const handleDeleteBook = async (id) => {
-    Alert.alert("Confirm Delete", "Are you sure you want to delete this book?", [
-      { text: "Cancel" },
-      { text: "Delete", onPress: async () => {
-        try {
-          await axios.delete(`http://localhost:9000/api/books/${id}`);
-          setBooks(prev => prev.filter(b => b._id !== id));
-        } catch (err) { alert("Error deleting book"); }
-      }, style: "destructive" }
-    ]);
-  };
+  const confirmDeleteBook = (id) => {
+  Alert.alert("Confirm Delete", "Are you sure you want to delete this book?", [
+    { text: "Cancel" },
+    { text: "Delete", onPress: () => handleDeleteBook(id), style: "destructive" }
+  ]);
+};
+
+const handleDeleteBook = async (id) => {
+  try {
+    await axios.delete(`http://localhost:9000/api/books/${id}`);
+    setBooks(prev => prev.filter(b => b._id !== id));
+  } catch (err) {
+    alert("Error deleting book");
+  }
+};
+
 
   return (
     <ProtectedRoute allowedRoles={["admin"]}>
@@ -221,6 +239,7 @@ export default function AdminDashboard() {
           <FlatList
             data={users}
             keyExtractor={item=>item._id}
+            extraData={users}  // forces re-render when books state changes
             renderItem={({item})=>(
               <View className="bg-white p-3 rounded-xl shadow mb-2 flex-row justify-between items-center">
                 <View>
@@ -232,7 +251,7 @@ export default function AdminDashboard() {
                   <TouchableOpacity onPress={()=>{ setUserForm(item); setShowEditUserModal(true)}} className="bg-yellow-400 px-3 py-1 rounded mr-2">
                     <Text>Edit</Text>
                   </TouchableOpacity>
-                  <TouchableOpacity onPress={()=>handleDeleteUser(item._id)} className="bg-red-500 px-3 py-1 rounded">
+                  <TouchableOpacity onPress={()=>confirmDeleteUser(item._id)} className="bg-red-500 px-3 py-1 rounded">
                     <Text className="text-white">Delete</Text>
                   </TouchableOpacity>
                 </View>
@@ -254,6 +273,7 @@ export default function AdminDashboard() {
           <FlatList
             data={books}
             keyExtractor={item=>item._id}
+            extraData={books} // forces re-render when books state changes
             renderItem={({item})=>(
               <View className="bg-white p-3 rounded-xl shadow mb-2 flex-row justify-between items-center">
                 <View>
@@ -265,7 +285,7 @@ export default function AdminDashboard() {
                   <TouchableOpacity onPress={()=>{ setBookForm(item); setShowEditBookModal(true)}} className="bg-yellow-400 px-3 py-1 rounded mr-2">
                     <Text>Edit</Text>
                   </TouchableOpacity>
-                  <TouchableOpacity onPress={()=>handleDeleteBook(item._id)} className="bg-red-500 px-3 py-1 rounded">
+                  <TouchableOpacity onPress={()=>confirmDeleteBook(item._id)} className="bg-red-500 px-3 py-1 rounded">
                     <Text className="text-white">Delete</Text>
                   </TouchableOpacity>
                 </View>
@@ -295,8 +315,7 @@ export default function AdminDashboard() {
         </View>
       )}
 
-      {/* Add/Edit Modals */}
-      {/* Users */}
+      
       <Modal visible={showAddUserModal || showEditUserModal} transparent animationType="slide">
         <View className="flex-1 justify-center items-center bg-black/50">
           <View className="bg-white w-11/12 p-5 rounded-xl">
