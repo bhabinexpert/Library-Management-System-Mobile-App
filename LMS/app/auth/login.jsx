@@ -1,7 +1,7 @@
 import { View, Text, TextInput, TouchableOpacity, ActivityIndicator } from "react-native";
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import axios from "axios";
-import asyncStorage from "@react-native-async-storage/async-storage";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 import { useRouter, Link } from "expo-router";
 
 const Login = () => {
@@ -10,6 +10,50 @@ const Login = () => {
   const [loading, setLoading] = useState(false);
   const [successMessage, setSuccessMessage] = useState("");
   const router = useRouter();
+
+  // ✅ Token check on first load
+  const verifyToken = async () => {
+    const token = await AsyncStorage.getItem("token");
+    if (!token) return;
+
+    try {
+      setLoading(true);
+
+      const response = await axios.get(
+        "http://localhost:9000/", 
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+
+      if (response.status === 200 && response.data.user) {
+        const { role, fullName } = response.data.user;
+
+        // Store user info locally
+        await AsyncStorage.setItem("user", JSON.stringify(response.data.user));
+
+        // Redirect based on role
+        if (role === "admin") {
+          router.replace("/admin");
+        } else {
+          router.replace("/user");
+        }
+      }
+    } catch (err) {
+      console.log("Token verification failed:", err.response?.data || err.message);
+      // Clear invalid token
+      await AsyncStorage.removeItem("token");
+      await AsyncStorage.removeItem("user");
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  useEffect(() => {
+    verifyToken();
+  }, []);
 
   const handleLogin = async () => {
     if (!formData.email || !formData.password) {
@@ -27,18 +71,15 @@ const Login = () => {
       setLoading(true);
       const response = await axios.post("http://localhost:9000/login", formData);
 
-      if (response.status===200) {
+      if (response.status === 200) {
         const { token, user } = response.data;
 
-        // Save token and user
-        await asyncStorage.setItem("token", token);
-        await asyncStorage.setItem("user", JSON.stringify(user));
+        await AsyncStorage.setItem("token", token);
+        await AsyncStorage.setItem("user", JSON.stringify(user));
 
-        // Show success
         setSuccessMessage("Login successful!");
         setError("");
 
-        // Short delay to show success message
         setTimeout(() => {
           if (user.role === "admin") {
             router.replace("/admin");
@@ -89,7 +130,7 @@ const Login = () => {
         {loading ? (
           <View className="flex-row justify-center items-center py-4">
             <ActivityIndicator size="large" color="#4f46e5" />
-            <Text className="ml-3 text-indigo-600 font-semibold">Logging in...</Text>
+            <Text className="ml-3 text-indigo-600 font-semibold">Processing...</Text>
           </View>
         ) : (
           <TouchableOpacity

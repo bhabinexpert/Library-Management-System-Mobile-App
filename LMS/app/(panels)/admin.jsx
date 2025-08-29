@@ -4,6 +4,7 @@ import axios from "axios";
 import { useNavigation } from "@react-navigation/native";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { router } from "expo-router";
+import ProtectedRoute from "../auth/protectedRoute";
 
 export default function AdminDashboard() {
   const navigation = useNavigation();
@@ -165,6 +166,7 @@ export default function AdminDashboard() {
   };
 
   return (
+    <ProtectedRoute allowedRoles={["admin"]}>
     <ScrollView className="flex-1 bg-gray-50 p-4">
       {/* Header */}
       <View className="flex-row justify-between items-center mb-6">
@@ -332,5 +334,6 @@ export default function AdminDashboard() {
         </ScrollView>
       </Modal>
     </ScrollView>
+    </ProtectedRoute>
   );
 }

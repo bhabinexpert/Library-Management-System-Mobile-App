@@ -14,6 +14,7 @@ import {
 import axios from "axios";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { router } from "expo-router";
+import ProtectedRoute from "../auth/protectedRoute";
 
 export default function user() {
   const [currentUser, setCurrentUser] = useState(null);
@@ -242,6 +243,7 @@ export default function user() {
   );
 
   return (
+    <ProtectedRoute allowedRoles={["user"]}>
     <View className="flex-1 bg-gray-100">
       
       <View className="flex-row items-center justify-between bg-white p-3 shadow">
@@ -476,5 +478,6 @@ export default function user() {
         </View>
       </Modal>
     </View>
+    </ProtectedRoute>
   );
 }

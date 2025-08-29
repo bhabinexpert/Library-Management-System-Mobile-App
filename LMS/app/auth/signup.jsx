@@ -117,7 +117,7 @@ export default function Signup() {
         {/* Footer */}
         <View className="mt-6 items-center">
           <Text className="text-gray-700">Already have an account?</Text>
-          <Link href="/login">
+          <Link href="/auth/login">
             <Text className="text-indigo-600 font-semibold mt-1">Login</Text>
           </Link>
         </View>
