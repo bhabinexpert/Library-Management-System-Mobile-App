@@ -41,10 +41,7 @@ export default function Signup() {
       await AsyncStorage.setItem("user", JSON.stringify(response.data.user));
 
       Alert.alert("Success", "Signup Successfully!");
-
-      
-      window.location.href = "/user/home";
-      router.push("/user/home");
+      router.push("/user");
 
     } catch (error) {
       Alert.alert("Error", error.response?.data?.message || "Signup failed");
