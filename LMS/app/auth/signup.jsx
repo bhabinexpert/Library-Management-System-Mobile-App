@@ -37,10 +37,14 @@ export default function Signup() {
       password,
     });
 
-    if (response.status === 201 || response.status === 200) {
-      Alert.alert("Success", "Signup successful! Please login now.");
-     
-      router.replace("/auth/login");
+    // ✅ Save token + user (like web version)
+    if (response.data.token && response.data.user) {
+      await AsyncStorage.setItem("token", response.data.token);
+      await AsyncStorage.setItem("user", JSON.stringify(response.data.user));
+
+      Alert.alert("Success", "Signup Successful!");
+      
+      router.replace("/user");
     } else {
       Alert.alert("Error", response.data.message || "Signup failed");
     }
@@ -49,6 +53,7 @@ export default function Signup() {
     console.log("Signup error:", error.response?.data || error.message);
   }
 };
+
 
 
   return (
