@@ -14,40 +14,42 @@ export default function Signup() {
 
 
   const handleSubmit = async () => {
-    if (!email || !password || !confirmPassword || !fullName) {
-      Alert.alert("Error", "All fields are required");
-      return;
+  if (!email || !password || !confirmPassword || !fullName) {
+    Alert.alert("Error", "All fields are required");
+    return;
+  }
+
+  const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+  if (!emailRegex.test(email)) {
+    Alert.alert("Error", "Invalid email address");
+    return;
+  }
+
+  if (password !== confirmPassword) {
+    Alert.alert("Error", "Passwords do not match!");
+    return;
+  }
+
+  try {
+    const response = await axios.post("https://library-management-system-gzjz.onrender.com/signup", {
+      fullName,
+      email,
+      password,
+    });
+
+    if (response.status === 201 || response.status === 200) {
+      Alert.alert("Success", "Signup successful! Please login now.");
+     
+      router.replace("/auth/login");
+    } else {
+      Alert.alert("Error", response.data.message || "Signup failed");
     }
+  } catch (error) {
+    Alert.alert("Error", error.response?.data?.message || "Signup failed");
+    console.log("Signup error:", error.response?.data || error.message);
+  }
+};
 
-    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    if (!emailRegex.test(email)) {
-      Alert.alert("Error", "Invalid email address");
-      return;
-    }
-
-    if (password !== confirmPassword) {
-      Alert.alert("Error", "Passwords do not match!");
-      return;
-    }
-
-    try {
-      const response = await axios.post("https://library-management-system-gzjz.onrender.com/signup", {
-        fullName,
-        email,
-        password,
-      });
-      
-      await AsyncStorage.setItem("token", response.data.token);
-      await AsyncStorage.setItem("user", JSON.stringify(response.data.user));
-
-      Alert.alert("Success", "Signup Successfully!");
-      router.push("/user");
-
-    } catch (error) {
-      Alert.alert("Error", error.response?.data?.message || "Signup failed");
-      console.log(error);
-    }
-  };
 
   return (
     <ScrollView className="flex-1 bg-gradient-to-b from-blue-50 to-indigo-50">
